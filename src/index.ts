@@ -49,8 +49,8 @@ interface JWTPayload {
 }
 
 export default {
-	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		if (!env.OPENAI_TOKEN || !env.SHARED_JWT_SECRET) return new Response('Bad request: Missing environment variables', { status: 400 });
+	async fetch(request: Request, env: Env, ctx: ExecutionContext) {
+		if (!env.OPENAI_API_KEY || !env.SHARED_JWT_SECRET) return new Response('Bad request: Missing environment variables', { status: 400 });
 
 		const url = new URL(request.url);
 		if (!ALLOWED_PATHS.includes(url.pathname)) return new Response('Bad request: Invalid path: ' + url.pathname, { status: 400 });
@@ -71,7 +71,8 @@ export default {
 		const proxyUrl = OPENAI_BASE + (url.href.substring(url.origin.length + 1));
 
 		const newRequest = new Request(request);
-		newRequest.headers.set('Authorization', `Bearer ${env.OPENAI_TOKEN}`);
+		newRequest.headers.set('Authorization', `Bearer ${env.OPENAI_API_KEY}`);
+		if (env.OPENAI_ORG_ID) newRequest.headers.set('OpenAI-Organization', env.OPENAI_ORG_ID);
 
 		// @TODO - validate request body for /v1/audio/transcriptions
 		if (url.pathname === '/v1/chat/completions' || url.pathname === '/v1/completions') {
