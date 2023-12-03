@@ -52,10 +52,11 @@ export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext) {
 		if (!env.OPENAI_API_KEY || !env.SHARED_JWT_SECRET) return new Response('Bad request: Missing environment variables', { status: 400 });
 
-		const url = new URL(request.url);
+		const clonedRequest = request.clone()
+		const url = new URL(clonedRequest.url);
 		if (!ALLOWED_PATHS.includes(url.pathname)) return new Response('Bad request: Invalid path: ' + url.pathname, { status: 400 });
 
-		const tokenHeader = request.headers.get('Authorization');
+		const tokenHeader = clonedRequest.headers.get('Authorization');
 		if (!tokenHeader) return new Response('Bad request: Missing `Authorization` header', { status: 400 });
 		const token = tokenHeader.split(' ')[1];
 		if (!token) return new Response('Bad request: Missing token', { status: 400 });
@@ -77,8 +78,7 @@ export default {
 		// @TODO - validate request body for /v1/audio/transcriptions
 		if (url.pathname === '/v1/chat/completions' || url.pathname === '/v1/completions') {
 			const schema = schemas[url.pathname];
-			const r = request.clone()
-			const json = await r.json();
+			const json = await clonedRequest.json();
 			const parsed = schema.parse(json)
 			// @TODO - use refinements in zod to add user id to request body
 		}
