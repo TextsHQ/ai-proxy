@@ -21,7 +21,8 @@ const schemas = {
 	}),
 	'/v1/completions': z.object({
 		model: z.enum([
-			'text-davinci-003'
+			'text-davinci-003', // legacy, remove later
+			'gpt-3.5-turbo-instruct',
 		]),
 		max_tokens: z.literal(100),
 		temperature: z.literal(0.5),
