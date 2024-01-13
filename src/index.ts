@@ -81,6 +81,15 @@ export default {
       const schema = schemas[url.pathname]
       const json = await clonedRequest.json()
       const parsed = schema.parse(json)
+      if (url.pathname === '/v1/completions' && parsed.model === 'text-davinci-003') {
+        parsed.model = 'gpt-3.5-turbo-instruct'
+        newRequest = new Request(
+          proxyUrl,
+          new Request(newRequest, {
+            body: JSON.stringify(parsed)
+          })
+        )
+      }
     }
     // @TODO - use refinements in zod to add user id to request body
 
