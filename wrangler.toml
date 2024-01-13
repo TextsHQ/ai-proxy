@@ -1,6 +1,6 @@
 name = "ai-proxy"
 main = "src/index.ts"
-compatibility_date = "2023-11-21"
+compatibility_date = "2023-10-30"
 
 # Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
 # Note: Use secrets to store sensitive data.

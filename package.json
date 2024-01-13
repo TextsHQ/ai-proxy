@@ -5,15 +5,21 @@
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
-    "start": "wrangler dev"
-  },
+    "start": "wrangler dev",
+		"lint": "eslint src --ext ts,tsx,js,jsx --cache"
+	},
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231121.0",
+    "@textshq/eslint-config": "https://github.com/TextsHQ/eslint-config#740eb1cdd2bfa48c694b1ecaf9d32656cfb2f2d1",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "eslint": ">=8",
     "typescript": "^5.0.4",
     "wrangler": "^3.18.0"
   },
   "dependencies": {
     "@tsndr/cloudflare-worker-jwt": "^2.3.2",
+    "@types/node": "^20.11.0",
     "zod": "^3.22.4"
   }
 }
